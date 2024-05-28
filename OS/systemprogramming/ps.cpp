@@ -31,11 +31,12 @@ fd=openat(AT_FDCWD,"/proc",O_DIRECTORY);
  while((BytesRead=syscall(SYS_getdents64, fd, buffer, BUF_SIZE))>0){
    for(size_t offset=0; offset<BytesRead;){
      CurrentStruct=reinterpret_cast<struct linux_dirent*>(buffer+offset);
+       std::cout << CurrentStruct->d_type; 
        if(CurrentStruct->d_type==DT_DIR){
          std::cout <<"Name: " <<  CurrentStruct->d_name << std::endl; 
        }
      offset+=CurrentStruct->d_reclen; 
      }
  }
-                 close(fd); 
-
+  close(fd); 
+}
