@@ -4,8 +4,8 @@
 #include<signal.h> 
 #include<fcntl.h>
 #include<cstdio>
-#include<cstring> 
 #include<sys/syscall.h>
+
 #define BUF_SIZE 4096
 struct linux_dirent {
     unsigned long  d_ino;     /* Inode number */
@@ -25,18 +25,24 @@ char buffer[BUF_SIZE];
 size_t BytesRead;
 struct linux_dirent* CurrentStruct;
 fd=openat(AT_FDCWD,"/proc",O_DIRECTORY);
- if(fd==-1)
-  throw std::runtime_error("Folder access did not work as intended"); 
+if(fd==-1)
+throw std::runtime_error("Folder access threw an error"); 
 
- while((BytesRead=syscall(SYS_getdents64, fd, buffer, BUF_SIZE))>0){
-   for(size_t offset=0; offset<BytesRead;){
-     CurrentStruct=reinterpret_cast<struct linux_dirent*>(buffer+offset);
-       std::cout << CurrentStruct->d_type; 
-       if(CurrentStruct->d_type==DT_DIR){
-         std::cout <<"Name: " <<  CurrentStruct->d_name << std::endl; 
-       }
-     offset+=CurrentStruct->d_reclen; 
+while((BytesRead=syscall(SYS_getdents64, fd, buffer, BUF_SIZE))>0){
+for(size_t offset=0; offset<BytesRead;){
+CurrentStruct=reinterpret_cast<struct linux_dirent*>(buffer+offset);
+//if(CurrentStruct->d_type==DT_DIR){
+ std::cout << "Ino number: " << CurrentStruct->d_ino << ", "; 
+ std::cout << "Offset: " << CurrentStruct->d_off << ", "; 
+ std::cout << "Length: " << CurrentStruct->d_reclen << ", "; 
+ std::cout << "Pad: " << CurrentStruct->pad << ", "; 
+ std::cout << "Struct type: " <<  CurrentStruct->d_type << ", "; 
+ std::cout << "Name: " <<  CurrentStruct->d_name << std::endl; 
+//}
+offset+=CurrentStruct->d_reclen; 
      }
+   if(BytesRead==-1)
+    throw std::runtime_error("Directory entry access error"); 	   
  }
   close(fd); 
 }
