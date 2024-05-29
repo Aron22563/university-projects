@@ -34,6 +34,7 @@ throw std::runtime_error("Folder access threw an error");
 while((BytesRead=syscall(SYS_getdents64, fd, buffer, BUF_SIZE))>0){
  for(size_t offset=0; offset<BytesRead;){
   CurrentStruct=reinterpret_cast<struct linux_dirent*>(buffer+offset);
+  if(std::isdigit(CurrentStruct->d_name[1]))
   std::cout << "Name: " <<  CurrentStruct->d_name << std::endl; 
   offset+=CurrentStruct->d_reclen; 
  }
