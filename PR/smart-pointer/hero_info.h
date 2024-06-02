@@ -1,9 +1,11 @@
+#ifndef HERO_INFO_H
+#define HERO_INFO_H
 #include <iostream> 
 enum class Hero_Class{ BARBARIAN, BARD, CLERIC, DRUID, FIGHTER, MONK, PALADIN,
 RANGER, ROGUE, SORCERER, WARLOCK, WIZARD};
 enum class Hero_Species{ DRAGONBORN, DWARF, ELF, GNOME, HALF_ELF, HALFLING,
 HALF_ORC, HUMAN, TIEFLING};
-ostream& operator<<(ostream& o, Hero_Class m){
+inline std::ostream& operator<<(std::ostream& o, Hero_Class m){
 	switch(m){
 		case Hero_Class::BARBARIAN: o << "Barbarian"; return o; 
 		case Hero_Class::BARD: o << "Bard"; return o; 
@@ -20,7 +22,7 @@ ostream& operator<<(ostream& o, Hero_Class m){
 		default: return o; 
 	}
 }
-ostream& operator<<(ostream& o, Hero_Species m){
+inline std::ostream& operator<<(std::ostream& o, Hero_Species m){
 	switch(m){
 		case Hero_Species::DRAGONBORN: o << "Dragonborn"; return o; 
 		case Hero_Species::DWARF: o << "Dwarf"; return o; 
@@ -34,3 +36,4 @@ ostream& operator<<(ostream& o, Hero_Species m){
 	}
 
 }
+#endif
