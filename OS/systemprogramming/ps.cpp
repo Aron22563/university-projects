@@ -97,4 +97,3 @@ while((BytesRead=syscall(SYS_getdents64, fd, buffer, BUF_SIZE))>0){
 }
   close(fd); 
 }
-
